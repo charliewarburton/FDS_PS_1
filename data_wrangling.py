@@ -24,4 +24,35 @@ def highest_earner_female(df):
 
 female_df = pd.DataFrame(highest_earner_female(df))
 
-print(female_df.head)
+#print(female_df.head)
+
+# function for the aggregate functions
+def aggregate_funcs(df):
+    aggregated_df = df.groupby("household_id").agg(
+        {
+            "household_id": "count",
+            "age": ["min", "max", "mean"],
+            "income": ["mean", "sum"],
+            "female": "sum"
+        }
+    )
+
+    # aggregated df will have two levels of columns, so we need to flatten it
+    aggregated_df.columns = ['_'.join(col).strip() for col in aggregated_df.columns.values]
+
+    # rename the columns
+    aggregated_df = aggregated_df.rename(
+        columns={
+        "household_id_count": "size_hh",
+        "age_mean": "mean_age",
+        "age_min": "min_age",
+        "age_max": "max_age",
+        "income_mean": "mean_income",
+        "income_sum": "total_income",
+        "female_sum": "nr_female"
+        }
+    )
+    
+    return aggregated_df
+
+print(aggregate_funcs(df).head())
