@@ -14,4 +14,14 @@ df = pd.DataFrame(
     }
 )
 
-df["size_hh"] = df.groupby("household_id")["household_id"].transform("count")
+# Function for if highest earner per household is female
+def highest_earner_female(df):
+    def helper(group):
+        highest_earner = group.loc[group['income'].idxmax()]
+        return highest_earner["female"] == 1
+    
+    return df.groupby("household_id").apply(helper)
+
+female_df = pd.DataFrame(highest_earner_female(df))
+
+print(female_df.head)
