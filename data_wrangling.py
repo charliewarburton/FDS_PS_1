@@ -55,4 +55,7 @@ def aggregate_funcs(df):
     
     return aggregated_df
 
-print(aggregate_funcs(df).head())
+agg_df = aggregate_funcs(df)
+female_df.columns = ["main_earner_female"]
+
+merged_df = pd.merge(agg_df, female_df, left_index=True, right_index=True)
