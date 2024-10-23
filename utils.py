@@ -14,15 +14,17 @@ def tidy_data(df):
 
 
 def line_plot(df, x, y, hue, title):
-    sns.lineplot(data=df, x=x, y=y, hue=hue)
+    ax = sns.lineplot(data=df, x=x, y=y, hue=hue)
+    sns.move_legend(ax, "upper left", bbox_to_anchor=(1, 1))
     plt.title(title)
     plt.show()
     return None
 
 def pct_change_graph(df, x, hue, title):
-    df["GDP Growth"] = df.group_by("Country")["GDP"].pct_change()
+    df["GDP Growth"] = df.groupby("Country")["GDP"].pct_change()
     df.dropna(inplace=True)
-    sns.lineplot(data=df, x=x, y=df["GDP Growth"], hue=hue)
+    ax = sns.lineplot(data=df, x=x, y=df["GDP Growth"], hue=hue)
+    sns.move_legend(ax, "upper left", bbox_to_anchor=(1, 1))
     plt.title(title)
     plt.show()
     return None
